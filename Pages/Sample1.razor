@@ -1,0 +1,19 @@
+﻿@page "/barcode"
+@using Syncfusion.Blazor.BarcodeGenerator
+<button @onclick="@onclick">Grid Type Change</button>>
+<SfBarcodeGenerator @ref="barcode" Width="200px" Height="150px" Type="@BarcodeType.Code39" Value="SYNCFUSION">
+    <BarcodeGeneratorDisplayText @ref="barcodetext" Text="@text"Position="@textposition"></BarcodeGeneratorDisplayText>
+</SfBarcodeGenerator>
+@code{
+    BarcodeGeneratorDisplayText barcodetext = new BarcodeGeneratorDisplayText();
+    TextPosition textposition = TextPosition.Bottom;
+    SfBarcodeGenerator barcode;
+    string text = "abcd";
+    public async Task onclick()
+    {
+        textposition = TextPosition.Top;
+        text = "nnnn";
+        //barcodetext.Text = "temp";
+    }
+
+}

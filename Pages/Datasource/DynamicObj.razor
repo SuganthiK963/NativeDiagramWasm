@@ -1,0 +1,112 @@
+﻿@page "/DynamicObject"
+
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Dynamic 
+
+<SfDiagramWasm @ref="Diagram" Id="diagram" Width="1000px" Height="500px"
+               NodeDefaults="NodeDefaults" ConnectorDefaults="ConnectorDefaults" SetNodeTemplate="SetTemplate">
+    <DataSourceSetting DataSource="DataSource" Id="Name" ParentId="Category">
+    </DataSourceSetting>
+    <ScrollSettings></ScrollSettings>
+</SfDiagramWasm>
+@code {
+    SfDiagramWasm Diagram;
+    float x = 100;
+    float y = 100;
+    List<DynamicDictionary> DataSource = new List<DynamicDictionary>();
+
+    protected override void OnInitialized()
+    {
+        dynamic d = new DynamicDictionary();
+        d.Name = "Diagram";
+        d.Category = "";
+        d.FillColor = "#659be5";
+
+        DataSource.Add(d);
+        d = new DynamicDictionary();
+        d.Name = "Layout";
+        d.Category = "Diagram";
+        d.FillColor = "#659be5";
+
+        DataSource.Add(d);
+        d = new DynamicDictionary();
+        d.Name = "Organizational chart";
+        d.Category = "Diagram";
+        d.FillColor = "#659be5";
+
+        DataSource.Add(d);
+        d = new DynamicDictionary();
+        d.Name = "Tree layout";
+        d.Category = "Layout";
+        d.FillColor = "#659be5";
+
+        DataSource.Add(d);
+        d = new DynamicDictionary();
+        d.Name = "Hierarchical tree";
+        d.Category = "Tree layout";
+        d.FillColor = "#659be5";
+
+        DataSource.Add(d);
+
+
+        //new HierarchicalDetails() { Name = "Diagram", Category = "", FillColor = "#659be5" },
+        //new HierarchicalDetails() { Name = "Layout", Category = "Diagram", FillColor = "#659be5" },
+        //new HierarchicalDetails() { Name = "Organizational chart", Category = "Diagram", FillColor = "#659be5" },
+        //new HierarchicalDetails() { Name = "Tree layout", Category = "Layout", FillColor = "#659be5" },
+        //new HierarchicalDetails() { Name = "Hierarchical tree", Category = "Tree layout", FillColor = "#659be5" },
+        base.OnInitialized();
+    }
+    private void NodeDefaults(IDiagramObject obj)
+    {
+        Node node = obj as Node;
+        node.OffsetX = x;
+        node.OffsetY = y;
+        x += 100;
+
+        //DynamicDictionary hierarchicalData = node.Data as DynamicDictionary;
+        //node.Style.Fill = hierarchicalData.FillColor;
+        //node.Annotations = new DiagramObjectCollection<ShapeAnnotation>()
+        //{
+        //    new ShapeAnnotation()
+        //    {
+        //        Content = hierarchicalData.Name
+        //    }
+        //};
+    }
+    private void ConnectorDefaults(IDiagramObject connector)
+    {
+
+    }
+    private ICommonElement SetTemplate(IDiagramObject node)
+    {
+        return null;
+    }
+    public class DynamicDictionary : System.Dynamic.DynamicObject
+    {
+        Dictionary<string, object> dictionary = new Dictionary<string, object>();
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            string name = binder.Name;
+            return dictionary.TryGetValue(name, out result);
+        }
+        public override bool TrySetMember(SetMemberBinder binder, object value)
+        {
+            dictionary[binder.Name] = value;
+            return true;
+        }
+
+        public override System.Collections.Generic.IEnumerable<string> GetDynamicMemberNames()
+        {
+            return this.dictionary?.Keys;
+        }
+
+    }
+    //public class HierarchicalDetails
+    //{
+    //    public string Name { get; set; }
+    //    public string FillColor { get; set; }
+    //    public string Category { get; set; }
+    //}
+}

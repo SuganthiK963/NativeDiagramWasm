@@ -1,0 +1,105 @@
+﻿@page "/BezierSegment1"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" Nodes="@nodes" Connectors="@connectors"></SfDiagramWasm>
+
+@code{
+
+        DiagramObjectCollection<Connector> connectors = new DiagramObjectCollection<Connector>();
+
+        DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+        nodes.Add(
+            new Node()
+            {
+                ID = "node1",
+                OffsetX = 100,
+                OffsetY = 300,
+                Width = 100,
+                Height = 100,
+                Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+            });
+        nodes.Add(new Node() {
+            ID = "node2", OffsetX = 300, OffsetY = 400, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+        nodes.Add(new Node() { ID = "node3", OffsetX = 500, OffsetY = 300, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0, Y = 0.5 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+        nodes.Add(new Node() { ID = "node4", OffsetX = 700, OffsetY = 400, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 1, Y = 0.5 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+
+
+        connectors = new DiagramObjectCollection<Connector>()
+        {
+            new Connector(){ID = "Connector1", SourcePoint= new Point{X=100, Y=400}, TargetPoint=new Point{X=200, Y=500}, CornerRadius=10, Type=Segments.Bezier,
+                Segments = new DiagramObjectCollection<ConnectorSegment>(){ new BezierSegment(){Type= Segments.Bezier } }
+            },
+            new Connector(){
+                ID="Connector2", SourcePoint=new Point{X=100, Y=200}, TargetPoint=new Point{X=250, Y=200},Type=Segments.Bezier,
+            Segments=  new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new BezierSegment(){Type=Segments.Bezier, Point1=new Point{X=125, Y=75}, Point2=new Point{X=225, Y=75 } }
+            }
+            },
+            new Connector()
+            {
+                ID="Connector3", SourcePoint=new Point{X=700, Y=100}, TargetPoint=new Point{X=800, Y=200},Type=Segments.Bezier,
+            Segments=  new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new BezierSegment(){Type=Segments.Bezier, Vector1=new Vector{Angle=90, Distance=75 }, Vector2=new Vector{Angle=90, Distance=75 }
+            }
+            }
+            },
+            new Connector()
+            {
+                ID="Connector4",  SourcePoint=new Point{X=400, Y=100}, TargetPoint=new Point{X=501, Y=200},Type=Segments.Bezier,
+                Segments=new DiagramObjectCollection<ConnectorSegment>()
+                {
+                    new BezierSegment{Type= Segments.Bezier}
+                }
+            }
+        };
+    }
+}

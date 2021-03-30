@@ -1,0 +1,225 @@
+﻿@page "/PageSettings-TwoWayBinding"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<style>
+    #diagram-space {
+        width: 70%;
+        float: left;
+    }
+
+    #properties {
+        width: 25%;
+        float: right;
+    }
+</style>
+
+<div id="diagram-space">
+    <SfDiagramWasm @ref="@diagram" ID="diagram" Width="1000px" Height="500px" Nodes="@nodes" Connectors="@connectors">
+        <PageSettings @bind-Width="@PageWidth" @bind-Height="@PageHeight" @bind-Orientation="@pageOrientation" @bind-MultiplePage="@IsMultiplePage" @bind-ShowPageBreaks="@IsShowPageBreaks">
+            <Background @bind-Source="@imageSource" @bind-Scale="@imageScale" @bind-Align="@imageAlignment" @bind-Color="@bgmColor"></Background>
+            <PageMargin @bind-Left="@marginLeft" @bind-Right="@marginRight" @bind-Top="@marginTop" @bind-Bottom="@marginBottom"></PageMargin>
+        </PageSettings>
+    </SfDiagramWasm>
+</div>
+
+<div id="properties">
+    <button @onclick="@OnSave">Save</button>
+    <button @onclick="@OnLoad">Load</button><br />
+
+    <b>Page: Width</b>
+    <input type="number" value="50" min="10" max="500" step="5" @onchange="@OnPageWidthChange" />
+    <b>Height</b>
+    <input type="number" value="50" min="10" max="500" step="5" @onchange="@OnPageHeightChange" />
+    <br />
+
+    <b>Orientation:</b>
+    <select id="shapes" @onchange="@OnPageOrientationChange">
+        <option value="@PageOrientation.Landscape">Landscape</option>
+        <option value="@PageOrientation.Portrait">Portrait</option>
+    </select><br>
+
+    <input type="checkbox" @onchange="@OnChangeMultiplePage" checked>
+    <label>Multiple Page</label>
+
+    <input type="checkbox" @onchange="@OnChangeShowPageBreaks" checked>
+    <label>Page Breaks</label><br>
+
+    <b>Margin</b><br />
+    <b>Left</b>
+    <input type="number" value="10" min="0" max="100" step="5" @onchange="@OnMarginLeftChange" />
+    <b>Right</b>
+    <input type="number" value="10" min="0" max="100" step="5" @onchange="@OnMarginRightChange" />
+    <br />
+    <b>Top</b>
+    <input type="number" value="10" min="0" max="100" step="5" @onchange="@OnMarginTopChange" />
+    <b>Bottom</b>
+    <input type="number" value="10" min="0" max="100" step="5" @onchange="@OnMarginBottomChange" />
+    <br /><br />
+
+    <b>Background</b>
+    <b>Color: </b>
+    <select @onchange="@BgmColorChange">
+        <option disabled selected>BG Color</option>
+        <option value="">Empty string</option>
+        <option value="transparent">transparent</option>
+        <option value="Blue">Blue</option>
+        <option value="Yellow">Yellow</option>
+        <option value="Green">Green</option>
+        <option value="Brown">Brown</option>
+    </select>
+    <br />
+
+    <b>Image:</b>
+    <select @onchange="@BgmImageChange">
+        <option disabled selected>BG Image Source</option>
+        <option value="">Empty string</option>
+        <option value="https://cdn.syncfusion.com/content/images/company-logos/Syncfusion_Logo_Image.png">Syncfusion</option>
+        <option value="https://res.cloudinary.com/practicaldev/image/fetch/s--GmGpxlwT--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/771/21df7034-5069-4e05-9f54-2c881bb9ebb7.png">logo</option>
+        <option value="https://www.w3schools.com/images/w3schools_green.jpg">W3schools</option>
+    </select>
+    <br />
+
+    <b>Scale:</b>
+    <select @onchange="@OnImageScaleChange" tabindex="2">
+        <option disabled selected>Image Scale</option>
+        <option value="@Scale.None">None</option>
+        <option value="@Scale.Meet">Meet</option>
+        <option value="@Scale.Slice">Slice</option>
+    </select>
+    <br />
+
+    <b>Alignment:</b>
+    <select @onchange="@OnImageAlignmentChange" tabindex="1">
+        <option disabled selected>Image Alignment</option>
+        <option value="@ImageAlignment.None">None</option>
+        <option value="@ImageAlignment.XMaxYMax">XMaxYMax</option>
+        <option value="@ImageAlignment.XMaxYMid">XMaxYMid</option>
+        <option value="@ImageAlignment.XMaxYMin">XMaxYMin</option>
+        <option value="@ImageAlignment.XMidYMax">XMidYMax</option>
+        <option value="@ImageAlignment.XMidYMid">XMidYMid</option>
+        <option value="@ImageAlignment.XMidYMin">XMidYMin</option>
+        <option value="@ImageAlignment.XMinYMax">XMinYMax</option>
+        <option value="@ImageAlignment.XMinYMid">XMinYMid</option>
+        <option value="@ImageAlignment.XMinYMin">XMinYMin</option>
+    </select>
+</div>
+
+@code{
+    SfDiagramWasm diagram;
+
+    double? PageWidth = 300;
+    double? PageHeight = 300;
+    PageOrientation pageOrientation = PageOrientation.Landscape;
+    bool IsMultiplePage = true;
+    bool IsShowPageBreaks = true;
+
+    string imageSource = "https://www.w3schools.com/images/w3schools_green.jpg";
+    Scale imageScale = Scale.Slice;
+    ImageAlignment imageAlignment = ImageAlignment.XMinYMin;
+    string bgmColor = "transparent";
+
+    double marginLeft = 10;
+    double marginRight = 10;
+    double marginTop = 10;
+    double marginBottom = 10;
+
+    DiagramObjectCollection<Node> nodes; DiagramObjectCollection<Connector> connectors;
+
+    protected override void OnInitialized()
+    {
+        nodes = new DiagramObjectCollection<Node>(){
+            new Node { ID = "node1", Width = 150, Height = 100, OffsetX = 100, OffsetY = 100, Annotations = new DiagramObjectCollection<ShapeAnnotation>() { new ShapeAnnotation() { Content = "Node1" } } },
+            new Node { ID = "node2", Width = 80, Height = 130, OffsetX = 200, OffsetY = 200, Annotations = new DiagramObjectCollection<ShapeAnnotation>() { new ShapeAnnotation() { Content = "Node2" } } },
+            new Node { ID = "node3", Width = 100, Height = 75, OffsetX = 300, OffsetY = 350, Annotations = new DiagramObjectCollection<ShapeAnnotation>() { new ShapeAnnotation() { Content = "Node3" } } }
+        };
+
+        connectors = new DiagramObjectCollection<Connector> {
+            new Connector { ID="connector1", SourcePoint=new Point { X=300, Y=400}, TargetPoint = new Point { X = 500, Y = 500 } }
+        };
+    }
+
+    private void OnPageWidthChange(ChangeEventArgs args)
+    {
+        PageWidth = double.Parse(args.Value.ToString());
+    }
+
+    private void OnPageHeightChange(ChangeEventArgs args)
+    {
+        PageHeight = double.Parse(args.Value.ToString());
+    }
+
+    private void OnPageOrientationChange(ChangeEventArgs args)
+    {
+        PageOrientation orientation = (PageOrientation)Enum.Parse(typeof(PageOrientation), args.Value.ToString());
+        pageOrientation = orientation;
+    }
+
+    private void OnChangeMultiplePage(ChangeEventArgs args)
+    {
+        IsMultiplePage = (bool)args.Value;
+    }
+
+    private void OnChangeShowPageBreaks(ChangeEventArgs args)
+    {
+        IsShowPageBreaks = (bool)args.Value;
+    }
+
+    private void OnMarginLeftChange(ChangeEventArgs args)
+    {
+        marginLeft = double.Parse(args.Value.ToString());
+    }
+
+    private void OnMarginRightChange(ChangeEventArgs args)
+    {
+        marginRight = double.Parse(args.Value.ToString());
+    }
+
+    private void OnMarginTopChange(ChangeEventArgs args)
+    {
+        marginTop = double.Parse(args.Value.ToString());
+    }
+
+    private void OnMarginBottomChange(ChangeEventArgs args)
+    {
+        marginBottom = double.Parse(args.Value.ToString());
+    }
+
+    private void BgmColorChange(ChangeEventArgs args)
+    {
+        string value = (string)args.Value;
+        bgmColor = value == "Empty string" ? string.Empty : value;
+    }
+
+    private void BgmImageChange(ChangeEventArgs args)
+    {
+        string val = (string)args.Value;
+        imageSource = val == "Empty string" ? string.Empty : val;
+    }
+
+    private void OnImageScaleChange(ChangeEventArgs args)
+    {
+        Scale scale = (Scale)Enum.Parse(typeof(Scale), args.Value.ToString());
+        imageScale = scale;
+    }
+
+    private void OnImageAlignmentChange(ChangeEventArgs args)
+    {
+        ImageAlignment alignment = (ImageAlignment)Enum.Parse(typeof(ImageAlignment), args.Value.ToString());
+        imageAlignment = alignment;
+    }
+
+    string json;
+
+    private void OnSave()
+    {
+       // json = diagram.Save();
+    }
+
+    private async void OnLoad()
+    {
+        //await diagram.Load(json);
+    }
+
+}

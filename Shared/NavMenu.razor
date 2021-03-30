@@ -1,0 +1,234 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">WasmNativeImplementation</a>
+    <button class="navbar-toggler">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<button class="btn btn-primary btn-xs" @onclick="@(() => DemosNavigation("basicElements"))"> Basic Ele </button>
+<button class="btn btn-primary btn-xs" @onclick="@(() => DemosNavigation("node"))"> Node </button>
+<button class="btn btn-primary btn-xs" @onclick="@(() => DemosNavigation("connector"))"> Connector </button>
+<br />
+<div style="margin-bottom:20px"></div>
+<button class="btn btn-primary btn-xs" @onclick="@(() => DemosNavigation("gridlines"))"> DiagramProperties </button>
+<button class="btn btn-primary btn-xs" @onclick="@(() => DemosNavigation("data"))"> DataSource </button>
+
+<div>
+    <ul class="nav flex-column" style="display:@getValue("node");">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Node - Basic Shapes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="FlowShapesSample" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Node - Flow Shapes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="NodePropertyChange">
+                <span class="oi oi-plus" aria-hidden="true"></span> Node Property Change
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Port">
+                <span class="oi oi-plus" aria-hidden="true"></span> Ports Property Change
+            </NavLink>
+        </li>
+    </ul>
+
+    <ul class="nav flex-column" style="display:@getValue("gridlines");">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Gridlines">
+                <span class="oi oi-plus" aria-hidden="true"></span> Gridlines
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="PageSettings">
+                <span class="oi oi-plus" aria-hidden="true"></span> PageSettings
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="PageSettings1">
+                <span class="oi oi-plus" aria-hidden="true"></span> PageSettings Tag only
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="PageSettings2">
+                <span class="oi oi-plus" aria-hidden="true"></span> Page,Margin Tag
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="PageSettings3">
+                <span class="oi oi-plus" aria-hidden="true"></span> Page,background Tag
+            </NavLink>
+        </li>
+    </ul>
+
+    <ul class="nav flex-column" style="display:@getValue("basicElements");">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="pathelement1" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Simple Path elements
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="diagramElement" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Simple Basic elements
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Basic-Style
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Rotate-canvas-size-2child-rotate">
+                <span class="oi oi-plus" aria-hidden="true"></span>Rotate-canvas-size-2child-rotate
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Child-absolute-position">
+                <span class="oi oi-plus" aria-hidden="true"></span> Child-absolute-position
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Canvas-Size-5Child">
+                <span class="oi oi-plus" aria-hidden="true"></span> Canvas-Size-5Child
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Canvas-2Child-Padding">
+                <span class="oi oi-plus" aria-hidden="true"></span>Canvas-2Child-Padding
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Canvas2Child">
+                <span class="oi oi-plus" aria-hidden="true"></span>Canvas2Child
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Canvas2Child-RotateAngle">
+                <span class="oi oi-plus" aria-hidden="true"></span>Canvas2Child -RotateAngle
+            </NavLink>
+        </li>
+    </ul>
+
+    <ul class="nav flex-column" style="display:@getValue("connector");">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConnectorSample" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>Connector
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConnectorPropertyChange" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>Connector Property Change
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConnectorPropertyChange1">
+                <span class="oi oi-plus" aria-hidden="true"></span>Connector Property Change1
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="OrthoSegment/NodeToNode">
+                <span class="oi oi-plus" aria-hidden="true"></span>Ortho - NodeToNode Segment
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="OrthoSegment/PointToNode">
+                <span class="oi oi-plus" aria-hidden="true"></span>Ortho - PointToNode Segment
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="OrthoSegment/PortToPort">
+                <span class="oi oi-plus" aria-hidden="true"></span>Ortho - PortToPort Segment
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="MultipleConnectorSegment" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Multiple - Segments
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="MultipleConnectorStraightSegment" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>Multiple - StraightSegment
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="MultipleConnectorBezierSegment">
+                <span class="oi oi-plus" aria-hidden="true"></span>Multiple - BezierSegment
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="MultipleConnectorOrthoSegment/PointToPoint">
+                <span class="oi oi-plus" aria-hidden="true"></span>Multiple - Ortho PointToPoint
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="MultipleConnectorOrthoSegment/NodeToNode">
+                <span class="oi oi-plus" aria-hidden="true"></span>Multiple - Ortho NodeToNode
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="MultipleConnectorOrthoSegment/PortToPort">
+                <span class="oi oi-plus" aria-hidden="true"></span>Multiple - Ortho PortToPort
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="SelfDocking">
+                <span class="oi oi-plus" aria-hidden="true"></span>SelfDocking
+            </NavLink>
+        </li>
+    </ul>
+    <ul class="nav flex-column" style="display:@getValue("data");">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="LocalData" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>LocalData
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="JsonData" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>JsonData
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ObservableData" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>ObservableData
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="RemoteData" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>RemoteData
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="SQLData" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span>SQLData
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+
+    private Dictionary<string, bool> classList = new Dictionary<string, bool>() {
+        { "node", true }, { "basicElements", false }, { "gridlines", false }, { "connector", false }, { "data", false }
+    };
+
+    private string getValue(string key)
+    {
+        return this.classList[key] ? "block" : "none";
+    }
+    private void DemosNavigation(string key)
+    {
+        double count = this.classList.Count;
+        foreach (var item in this.classList.ToList())
+        {
+            if (key == item.Key)
+                this.classList[item.Key] = true;
+            else
+                this.classList[item.Key] = false;
+        }
+
+    }
+}

@@ -1,0 +1,37 @@
+﻿@page "/Canvas2Child"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        Canvas canvas = new Canvas();
+        canvas.Pivot = new Point{ X= 0, Y= 0 };
+        canvas.OffsetX = 200;
+        canvas.OffsetY = 100;
+        canvas.Style.Fill = "wheat";
+
+
+        DiagramElement child1 = new DiagramElement();
+        child1.Width = 100;
+        child1.Height = 100;
+        child1.Margin.Left = child1.Margin.Top = 10;
+
+        DiagramElement child2 = new DiagramElement();
+        child2.Width = 100;
+        child2.Height = 100;
+        child2.Margin.Left = child2.Margin.Top = 190;
+
+        canvas.Children = new DiagramObjectCollection<ICommonElement>() { child1, child2 };
+
+        basicElements.Add(canvas);
+    }
+
+}

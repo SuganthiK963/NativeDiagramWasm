@@ -1,0 +1,41 @@
+﻿@page "/CanvasMinMaxSize"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        Canvas canvas = new Canvas();
+        canvas.Pivot = new Point() { X = 0, Y= 0 };
+        canvas.OffsetX = 200;
+        canvas.OffsetY = 100;
+        canvas.Width = 200;
+        canvas.Height = 200;
+        canvas.MinWidth = canvas.MinHeight = 125;
+        canvas.MaxWidth = canvas.MaxHeight = 150;
+
+        Canvas canvasWithMinMaxSize = new Canvas();
+        canvasWithMinMaxSize.Pivot = new Point() { X = 0, Y= 0 };
+        canvasWithMinMaxSize.OffsetX = 400;
+        canvasWithMinMaxSize.OffsetY = 100;
+        canvasWithMinMaxSize.MinWidth = canvasWithMinMaxSize.MinHeight = 125;
+        canvasWithMinMaxSize.MaxWidth = canvasWithMinMaxSize.MaxHeight = 150;
+
+        Canvas canvasWithoutSize = new Canvas();
+        canvasWithoutSize.Pivot = new Point(){ X= 0, Y= 0 };
+        canvasWithoutSize.OffsetX = 600;
+        canvasWithoutSize.OffsetY = 100;
+
+        basicElements.Add(canvas);
+        basicElements.Add(canvasWithMinMaxSize);
+        basicElements.Add(canvasWithoutSize);
+    }
+
+}

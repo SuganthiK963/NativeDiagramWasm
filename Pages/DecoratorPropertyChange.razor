@@ -1,0 +1,704 @@
+﻿@page "/DecoratorPropertyChange"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+@using Microsoft.AspNetCore.Components;
+
+<style>
+    #diagram-space {
+        width: 70%;
+        float: left;
+    }
+
+    #properties {
+        width: 25%;
+        float: right;
+    }
+</style>
+
+<div id="properties">
+    <input type="button" value="BeginUpdate" @onclick="@BeginUpdate" />
+    <input type="button" value="EndUpdate" @onclick="@EndUpdate" />
+    <b> Connector Selection:</b>
+    <select id="selectionOption" @onchange="@OnSelectConnector">
+        <option disabled selected>Connectors</option>
+        <option value="0">Connector 1</option>
+        <option value="1">Connector 2</option>
+        <option value="2">Connector 3</option>
+        <option value="3">Connector 4</option>
+        <option value="4">Connector 5</option>
+        <option value="5">Connector 6</option>
+        <option value="6">Connector 7</option>
+        <option value="7">Connector 8</option>
+        <option value="8">Connector 9</option>
+        <option value="9">Connector 10</option>
+    </select>
+    <br /><br />
+    <b> Change connector Type:</b>
+    <select @onchange="@OnChangeConnectorType">
+        <option disabled selected>Connectors</option>
+        <option value="@Segments.Straight">Straight</option>
+        <option value="@Segments.Orthogonal">Orthogonal</option>
+        <option value="@Segments.Bezier">Bezier</option>
+        <option value="@Segments.Polyline">Polyline</option>
+    </select>
+    <b> Segment collection change</b>
+    <select id="selectionOption" @onchange="@OnSegmentCollChange">
+        <option disabled selected>Connectors</option>
+        <option value="Straight">Straight</option>
+        <option value="Orthogonal">Orthogonal</option>
+        <option value="Bezier">Bezier</option>
+        </select>
+        <b>CornerRadius:</b>
+        <input type="number" value="0" min="5" max="30" step="5" @onchange="@OnCornerRadiusChange" />
+
+        <b>SourcePadding</b>
+        <input type="number" value="50" min="10" max="100" step="5" @onchange="@OnSourcePaddingChange" />
+        <b>TargetPadding</b>
+        <input type="number" value="50" min="10" max="100" step="5" @onchange="@OnTargetPddingChange" />
+
+        <b>SourcePoint: X</b>
+        <input type="number" value="50" min="10" max="100" step="5" @onchange="@OnSourcePointXChange" />
+        <b>SourcePoint: Y</b>
+        <input type="number" value="50" min="10" max="100" step="5" @onchange="@OnSourcePointYChange" />
+        <b>TargetPoint: X</b>
+        <input type="number" value="50" min="10" max="100" step="5" @onchange="@OnTargetPointXChange" />
+        <b>TargetPoint: Y</b>
+        <input type="number" value="50" min="10" max="100" step="5" @onchange="@OnTargetPointYChange" />
+        <b> Connection Change:</b>
+        <select @onchange="@OnSourceIDChange">
+            <option disabled selected>Source ID Change</option>
+            <option value="">Empty string</option>
+            <option value="node1">Node 1</option>
+            <option value="node2">Node 2</option>
+            <option value="node3">Node 3</option>
+            <option value="node4">Node 4</option>
+        </select>
+        <br />
+        <br />
+        <select @onchange="@OnTargetIDChange">
+            <option disabled selected>Target ID Change</option>
+            <option value="">Empty string</option>
+            <option value="node1">Node 1</option>
+            <option value="node2">Node 2</option>
+            <option value="node3">Node 3</option>
+            <option value="node4">Node 4</option>
+        </select>
+        <br />
+        <br />
+        <select @onchange="@OnSourcePortIDChange">
+            <option disabled selected>Source Port ID Change</option>
+            <option value="">Empty string</option>
+            <option value="port1">Port 1</option>
+            <option value="port2">Port 2</option>
+            <option value="port3">Port 3</option>
+            <option value="port4">Port 4</option>
+        </select>
+        <br />
+        <br />
+        <select @onchange="@OnTargetPortIDChange">
+            <option disabled selected>Target Port ID Change</option>
+            <option value="">Empty string</option>
+            <option value="port1">Port 1</option>
+            <option value="port2">Port 2</option>
+            <option value="port3">Port 3</option>
+            <option value="port4">Port 4</option>
+        </select>
+        <br />
+        <br />
+        <div>
+            <b>Decorator:</b>
+            <select @onchange="@OnSelectDecorator">
+                <option disabled selected>Choose decorator</option>
+                <option value="source">Source</option>
+                <option value="target">Target</option>
+            </select>
+
+            <input type="button" @onclick="@RestDecorator" value="Rest Decorator" />
+            Shape:
+            <select id="shapes" @onchange="@OnDecoratorShapeChange">
+                <option disabled selected>DecoratorShape</option>
+                <option value="@DecoratorShapes.None">None</option>
+                <option value="@DecoratorShapes.Arrow">Arrow</option>
+                <option value="@DecoratorShapes.Circle">Circle</option>
+                <option value="@DecoratorShapes.Diamond">Diamond</option>
+                <option value="@DecoratorShapes.DoubleArrow">DoubleArrow</option>
+                <option value="@DecoratorShapes.Fletch">Fletch</option>
+                <option value="@DecoratorShapes.IndentedArrow">IndentedArrow</option>
+                <option value="@DecoratorShapes.OpenArrow">OpenArrow</option>
+                <option value="@DecoratorShapes.OpenFetch">OpenFetch</option>
+                <option value="@DecoratorShapes.OutdentedArrow">OutdentedArrow</option>
+                <option value="@DecoratorShapes.Square">Square</option>
+                <option value="@DecoratorShapes.Custom">Custom</option>
+            </select><br />
+
+            <b>Custom Path:</b>
+            <select id="shapes" @onchange="@OnPathShapeChange">
+                <option disabled selected>PathShape</option>
+                <option value="M 355.31 12.07 C 352.11 5.95 345.35 -1.14 331.41 0.15 C 290.33 3.93 209.61 81.48 190.42 111.69 C 189.66 107.76 187.9 101.49 184.12 98.05 C 189.5 87.75 198.01 69.64 201.57 52.48 C 202.4 52.26 203.12 51.68 203.34 50.44 C 203.72 48.34 204 46.22 204.39 44.13 C 205.01 40.62 199.99 39.43 199.42 42.91 C 199.06 45.06 198.69 47.15 198.35 49.31 C 198.16 50.6 198.69 51.62 199.54 52.14 C 196.08 68.87 187.75 86.63 182.43 96.81 C 181.52 96.29 180.53 95.87 179.41 95.7 C 179.09 95.65 178.8 95.72 178.5 95.71 C 178.19 95.72 177.91 95.65 177.59 95.7 C 176.46 95.87 175.48 96.29 174.56 96.81 C 169.24 86.63 160.92 68.87 157.46 52.14 C 158.3 51.62 158.83 50.6 158.65 49.31 C 158.3 47.15 157.93 45.06 157.58 42.91 C 157.01 39.43 151.99 40.62 152.61 44.13 C 152.99 46.22 153.28 48.34 153.66 50.44 C 153.87 51.68 154.6 52.27 155.42 52.48 C 158.98 69.63 167.49 87.75 172.87 98.05 C 169.09 101.49 167.33 107.76 166.57 111.69 C 147.39 81.48 66.67 3.93 25.59 0.15 C 11.65 -1.14 4.89 5.95 1.69 12.07 C -2.05 19.07 0.84 33.48 6.24 58.46 C 8.66 69.55 11.16 80.96 12.94 92.2 C 13.89 98.36 14.79 104.49 15.64 110.36 C 19.39 136.89 22.52 158.97 32.64 166.04 C 35.41 167.98 38.65 168.78 42.61 168.24 C 52.26 165.95 63.79 164.03 75.99 162.67 C 64.03 171.47 49.08 185.81 44.17 204.84 C 40.38 219.72 43.37 234.86 53.01 250.05 C 64.37 267.81 76.02 279.48 86.91 287.09 C 108.68 302.31 127.52 301.24 135.48 300.78 C 136.3 300.77 136.94 300.71 137.56 300.69 C 143.62 300.61 147.76 291.39 156.6 270.51 C 160.94 260.34 167.39 245.19 172.83 237.47 C 173.97 240.31 177.22 242.31 178.92 242.87 C 178.78 242.94 178.62 243.07 178.49 243.12 C 178.65 243.08 178.83 242.97 179 242.91 C 179.1 242.94 179.25 243.02 179.34 243.04 C 179.26 243.01 179.13 242.93 179.04 242.89 C 180.83 242.24 183.05 240.25 184.16 237.48 C 189.6 245.19 196.05 260.34 200.39 270.52 C 209.23 291.4 213.38 300.61 219.43 300.7 C 220.05 300.72 220.69 300.77 221.51 300.78 C 229.47 301.25 248.31 302.31 270.08 287.1 C 280.97 279.49 292.62 267.81 303.98 250.05 C 313.62 234.86 316.6 219.72 312.82 204.84 C 307.91 185.82 292.96 171.48 281 162.67 C 293.2 164.03 304.73 165.95 314.38 168.24 C 318.34 168.78 321.58 167.98 324.35 166.04 C 334.47 158.97 337.6 136.89 341.35 110.37 C 342.19 104.49 343.1 98.37 344.05 92.2 C 345.83 80.96 348.33 69.55 350.75 58.46 C 356.16 33.48 359.05 19.07 355.31 12.07 z M 183.92 237.56 C 182.35 240.3 180.35 242.13 178.97 242.86 C 177.49 242.19 174.7 240.38 173.08 237.56 C 173.08 237.56 166.19 138.22 166.91 113.58 C 166.91 113.58 169.24 97.92 178.5 97.81 C 187.76 97.92 190.09 113.58 190.09 113.58 C 190.81 138.22 183.92 237.56 183.92 237.56 z">Butterfly</option>
+                <option value="M540.3643,137.9336L546.7973,159.7016L570.3633,159.7296L550.7723,171.9366L558.9053,194.9966L540.3643,179.4996L521.8223,194.9966L529.9553,171.9366L510.3633,159.7296L533.9313,159.7016L540.3643,137.9336z">Star</option>
+                <option value="M0,50 a1,1 0 0,0 100,0">Half circle</option>
+                <option value="M20 12 L4 12 L4 22 L22 22 L22 14 L20 14 L20 12 L22 14 Z">Note</option>
+                <option value="M433.4624,503.8848C429.4244,493.2388,419.1354,485.6678,407.0734,485.6678C391.4884,485.6678,378.8544,498.3018,378.8544,513.8868L384.4984,513.8868C384.4984,501.4178,394.6054,491.3108,407.0734,491.3108C415.9494,491.3108,423.6264,496.4338,427.3144,503.8848L422.9114,503.8848L426.8974,508.8848L430.8824,513.8868L434.8684,508.8848L438.8544,503.8848L433.4624,503.8848z">Arrow</option>
+            </select>
+
+            <b>Pivot</b>
+            X:<input type="number" value="0.5" min="0" max="1" step="0.1" @onchange="@OnPivotXChange" />
+            Y:<input type="number" value="0.5" min="0" max="1" step="0.1" @onchange="@OnPivotYChange" />
+
+
+
+        </div>
+        Style:
+        <select @onchange="@SelectStyleToShape">
+            <option disabled selected>Choose decorator or connector</option>
+            <option value="Connector">Connector</option>
+            <option value="SourceDecorator">SourceDecorator</option>
+            <option value="TargetDecorator">TargetDecorator</option>
+        </select>
+        <br />
+        <button @onclick="@UpdateStyle">UpdateStyle</button>
+        <select @onchange="@FillColorChange">
+            <option disabled selected>Fill</option>
+            <option value="Blue">Blue</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Green">Green</option>
+            <option value="Brown">Brown</option>
+        </select>
+        <select @onchange="@StrokeColorChange">
+            <option disabled selected>Stroke</option>
+            <option value="Blue">Blue</option>
+            <option value="Red">Red</option>
+            <option value="White">White</option>
+            <option value="Yellow">Yellow</option>
+            <option value="Green">Green</option>
+            <option value="Brown">Brown</option>
+            <option value="Lightgrey">Lightgrey</option>
+        </select>
+        <br />
+
+        <select @onchange="@StrokeDashArrayChange">
+            <option disabled selected>DashArray</option>
+            <option value="2,2">2,2</option>
+            <option value="3,3">3,3</option>
+            <option value="4,4">4,4</option>
+            <option value="5,5">5,5</option>
+        </select>
+
+        <b>StrokeWidth:</b>
+        <input type="number" value="1" min="1" max="20" step="1" @onchange="@StrokeWidthChange" />
+        <br />
+
+        <b>Opacity:</b>
+        <input type="number" value="1" min="0" max="1" step="0.1" @onchange="@OpacityChange" />
+
+        <br />
+        <br />
+        <b>Gradient:</b>
+        <select @onchange="@GradientChange">
+            <option disabled selected>GradientChange</option>
+            <option value="linear">Linear Gradient</option>
+            <option value="radial">Radial Gradient</option>
+        </select>
+        <br />
+
+        <b>Gradient Values:</b>
+        <select @onchange="@LinearGradientChange">
+            <option disabled selected>GradientChange</option>
+            <option value="linear">Linear Gradient</option>
+            <option value="radial">Radial Gradient</option>
+        </select>
+
+        <br />
+        <br />
+</div>
+
+<div id="diagram-space">
+    <SfDiagramWasm @ref="@diagram" ID="diagram" Width="100%" Height="500px" Nodes="@nodes" Connectors="@connectors"></SfDiagramWasm>
+</div>
+
+@code{
+
+    SfDiagramWasm diagram;
+
+    DiagramObjectCollection<Connector> connectors = new DiagramObjectCollection<Connector>();
+
+    DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+        nodes.Add(new Node()
+        {
+            ID = "node1",
+            OffsetX = 100,
+            OffsetY = 300,
+            Width = 100,
+            Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                    {
+                        new PointPort()
+                        {
+                            ID="port1", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port2", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 0 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port3", Visibility = PortVisibility.Visible, Offset = new Point() { X = 1, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port4", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 1 }, Shape = PortShapes.Circle,
+                        },
+                    }
+        });
+        nodes.Add(new Node()
+        {
+            ID = "node2",
+            OffsetX = 300,
+            OffsetY = 400,
+            Width = 100,
+            Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                    {
+                        new PointPort()
+                        {
+                            ID="port1", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port2", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 0 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port3", Visibility = PortVisibility.Visible, Offset = new Point() { X = 1, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port4", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 1 }, Shape = PortShapes.Circle,
+                        },
+                    }
+        });
+        nodes.Add(new Node()
+        {
+            ID = "node3",
+            OffsetX = 500,
+            OffsetY = 300,
+            Width = 100,
+            Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                    {
+                        new PointPort()
+                        {
+                            ID="port1", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port2", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 0 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port3", Visibility = PortVisibility.Visible, Offset = new Point() { X = 1, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port4", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 1 }, Shape = PortShapes.Circle,
+                        },
+                    }
+        });
+        nodes.Add(new Node()
+        {
+            ID = "node4",
+            OffsetX = 700,
+            OffsetY = 400,
+            Width = 100,
+            Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                    {
+                        new PointPort()
+                        {
+                            ID="port1", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port2", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 0 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port3", Visibility = PortVisibility.Visible, Offset = new Point() { X = 1, Y = 0.5 }, Shape = PortShapes.Circle,
+                        },
+                        new PointPort()
+                        {
+                            ID="port4", Visibility = PortVisibility.Visible, Offset = new Point() { X = 0.5, Y = 1 }, Shape = PortShapes.Circle,
+                        },
+                    }
+        });
+
+
+        Connector connector1 = new Connector() { ID = "connector1", SourcePoint = new Point() { X = 100, Y = 10 }, TargetPoint = new Point() { X = 200, Y = 100 }, Type = Segments.Straight };
+        connectors.Add(connector1);
+
+        Connector connector2 = new Connector() { ID = "connector2", SourcePoint = new Point() { X = 300, Y = 10 }, TargetPoint = new Point() { X = 400, Y = 100 }, Type = Segments.Orthogonal };
+        connectors.Add(connector2);
+
+        Connector connector3 = new Connector() { ID = "connector3", SourcePoint = new Point() { X = 500, Y = 10 }, TargetPoint = new Point() { X = 600, Y = 100 }, Type = Segments.Bezier };
+        connectors.Add(connector3);
+
+        Connector connector4 = new Connector() { ID = "connector4", SourceID = "node1", TargetID = "node2", Type = Segments.Straight };
+        connectors.Add(connector4);
+
+        Connector connector5 = new Connector() { ID = "connector5", SourceID = "node2", TargetID = "node3", Type = Segments.Orthogonal };
+        connectors.Add(connector5);
+
+        Connector connector6 = new Connector() { ID = "connector6", SourceID = "node3", TargetID = "node4", Type = Segments.Bezier };
+        connectors.Add(connector6);
+
+        Connector connector7 = new Connector() { ID = "connector7", SourceID = "node1", TargetID = "node2", Type = Segments.Straight, SourcePortID = "port1", TargetPortID = "port1" };
+        connectors.Add(connector7);
+
+        Connector connector8 = new Connector() { ID = "connector8", SourceID = "node2", TargetID = "node3", Type = Segments.Orthogonal, SourcePortID = "port1", TargetPortID = "port1" };
+        connectors.Add(connector8);
+
+        Connector connector9 = new Connector() { ID = "connector9", SourceID = "node3", TargetID = "node4", Type = Segments.Bezier, SourcePortID = "port1", TargetPortID = "port1" };
+        connectors.Add(connector9);
+
+    }
+
+    Connector connector;
+
+    private void BeginUpdate()
+    {
+        diagram.BeginUpdate();
+    }
+
+    private void EndUpdate()
+    {
+        diagram.EndUpdate();
+    }
+
+    private void OnSelectConnector(ChangeEventArgs args)
+    {
+        int index = int.Parse(args.Value.ToString());
+        connector = connectors[index];
+    }
+
+    private void OnSourcePointXChange(ChangeEventArgs args)
+    {
+        connector.SourcePoint.X = double.Parse(args.Value.ToString());
+    }
+
+    private void OnSourcePointYChange(ChangeEventArgs args)
+    {
+        connector.SourcePoint = new Point { Y = double.Parse(args.Value.ToString()), X = connector.SourcePoint.X };
+    }
+
+    private void OnTargetPointXChange(ChangeEventArgs args)
+    {
+        connector.TargetPoint = new Point { X = double.Parse(args.Value.ToString()), Y = connector.SourcePoint.Y };
+    }
+
+    private void OnTargetPointYChange(ChangeEventArgs args)
+    {
+        connector.TargetPoint.Y = double.Parse(args.Value.ToString());
+    }
+
+    private void OnSourceIDChange(ChangeEventArgs args)
+    {
+        string val = args.Value.ToString();
+        connector.SourceID = val == "Empty string" ? string.Empty: val;
+    }
+
+
+    private void OnSourcePortIDChange(ChangeEventArgs args)
+    {
+        string val = args.Value.ToString();
+        connector.SourcePortID = val == "Empty string" ? string.Empty : val;
+    }
+
+
+    private void OnTargetIDChange(ChangeEventArgs args)
+    {
+        string val = args.Value.ToString();
+        connector.TargetID = val == "Empty string" ? string.Empty : val;
+    }
+
+
+    private void OnTargetPortIDChange(ChangeEventArgs args)
+    {
+        string val = args.Value.ToString();
+        connector.TargetPortID = val == "Empty string" ? string.Empty : val;
+    }
+
+    Decorator decorator;
+
+    private void OnSelectDecorator(ChangeEventArgs args)
+    {
+        decorator = (args.Value.ToString() == "source") ? connector.SourceDecorator : connector.TargetDecorator;
+    }
+
+    private void OnDecoratorShapeChange(ChangeEventArgs args)
+    {
+        DecoratorShapes shape = (DecoratorShapes)Enum.Parse(typeof(DecoratorShapes), args.Value.ToString());
+        decorator.Shape = shape;
+        StateHasChanged();
+    }
+
+    private void OnDecoratorWidthChange(ChangeEventArgs args)
+    {
+        decorator.Width = double.Parse(args.Value.ToString());
+    }
+
+    private void OnDecoratorHeightChange(ChangeEventArgs args)
+    {
+        decorator.Height = double.Parse(args.Value.ToString());
+    }
+
+    private void OnPathShapeChange(ChangeEventArgs args)
+    {
+        string pathData = args.Value.ToString();
+        decorator.PathData = args.Value.ToString();
+    }
+
+    private void OnPivotXChange(ChangeEventArgs args)
+    {
+        decorator.Pivot.X = double.Parse(args.Value.ToString());
+    }
+
+    private void OnPivotYChange(ChangeEventArgs args)
+    {
+        decorator.Pivot.Y = double.Parse(args.Value.ToString());
+    }
+
+    string ToChangeStyle = "Connector";
+    private void SelectStyleToShape(ChangeEventArgs args)
+    {
+        ToChangeStyle = args.Value.ToString();
+    }
+
+    private void UpdateStyle()
+    {
+        ShapeStyle style = new ShapeStyle() { Fill = "orange", StrokeColor = "blue", Opacity = 1 };
+        if (ToChangeStyle == "Connector")
+        {
+            connector.Style = style;
+        }
+        else if(ToChangeStyle == "SourceDecorator")
+        {
+            connector.SourceDecorator.Style = style;
+        }
+        else
+        {
+            connector.TargetDecorator.Style = style;
+        }
+        StateHasChanged();
+    }
+
+    public void FillColorChange(ChangeEventArgs args)
+    {
+        string value = (string)args.Value;
+        if (ToChangeStyle == "Connector")
+        {
+            connector.Style.Fill = value;
+        }
+        else if (ToChangeStyle == "SourceDecorator")
+        {
+            connector.SourceDecorator.Style.Fill = value;
+        }
+        else
+        {
+            connector.TargetDecorator.Style.Fill = value;
+        }
+    }
+
+    public void StrokeColorChange(ChangeEventArgs args)
+    {
+        string value = (string)args.Value;
+        if (ToChangeStyle == "Connector")
+        {
+            connector.Style.StrokeColor = value;
+        }
+        else if (ToChangeStyle == "SourceDecorator")
+        {
+            connector.SourceDecorator.Style.StrokeColor = value;
+        }
+        else
+        {
+            connector.TargetDecorator.Style.StrokeColor = value;
+        }
+    }
+
+    public void StrokeDashArrayChange(ChangeEventArgs args)
+    {
+        string value = (string)args.Value;
+        if (ToChangeStyle == "Connector")
+        {
+            connector.Style.StrokeDashArray = value;
+        }
+        else if (ToChangeStyle == "SourceDecorator")
+        {
+            connector.SourceDecorator.Style.StrokeDashArray = value;
+        }
+        else
+        {
+            connector.TargetDecorator.Style.StrokeDashArray = value;
+        }
+    }
+
+    public void StrokeWidthChange(ChangeEventArgs args)
+    {
+        double value = double.Parse(args.Value.ToString());
+        if (ToChangeStyle == "Connector")
+        {
+            connector.Style.StrokeWidth = value;
+        }
+        else if (ToChangeStyle == "SourceDecorator")
+        {
+            connector.SourceDecorator.Style.StrokeWidth = value;
+        }
+        else
+        {
+            connector.TargetDecorator.Style.StrokeWidth = value;
+        }
+    }
+
+    public void OpacityChange(ChangeEventArgs args)
+    {
+        double value = double.Parse(args.Value.ToString());
+        if (ToChangeStyle == "Connector")
+        {
+            connector.Style.Opacity = value;
+        }
+        else if (ToChangeStyle == "SourceDecorator")
+        {
+            connector.SourceDecorator.Style.Opacity = value;
+        }
+        else
+        {
+            connector.TargetDecorator.Style.Opacity = value;
+        }
+    }
+
+    public void GradientChange(ChangeEventArgs args)
+    {
+        string value = args.Value.ToString();
+        if (value == "linear")
+        {
+            connector.Style.Gradient = new LinearGradient()
+            {
+                Type = GradientType.Linear,
+                X1 = 0,
+                X2 = 50,
+                Y1 = 0,
+                Y2 = 50,
+                Stops = new DiagramObjectCollection<GradientStop>()
+                    {
+                        new GradientStop(){ Color= "white", Offset=0},
+                        new GradientStop(){Color ="#6BA5D7", Offset=100}
+                    }
+            };
+
+        }
+        else
+        {
+            connector.Style.Gradient = new RadialGradient()
+            {
+                Type = GradientType.Radial,
+                Cx = 50,
+                Cy = 50,
+                Fx = 50,
+                Fy = 50,
+                Stops = new DiagramObjectCollection<GradientStop>()
+                    {
+                        new GradientStop(){ Color= "white", Offset=0},
+                        new GradientStop(){Color ="violet", Offset=50}
+                    }
+            };
+        }
+    }
+
+    public void LinearGradientChange(ChangeEventArgs args)
+    {
+        string value = args.Value.ToString();
+        if (value == "linear")
+        {
+            LinearGradient gradient = (connector.Style.Gradient as LinearGradient);
+            gradient.X1 = 10;
+            gradient.X2 = 70;
+            gradient.Y1 = 10;
+            gradient.Y2 = 70;
+            gradient.Stops[0].Color = "brown";
+            gradient.Stops[0].Color = "green";
+        }
+        else
+        {
+            RadialGradientChange();
+        }
+    }
+
+    public void RadialGradientChange()
+    {
+        RadialGradient gradient = connector.Style.Gradient as RadialGradient;
+        gradient.Cx = 60; gradient.Cy = 60;
+        gradient.Fx = 60; gradient.Fy = 60;
+        gradient.Stops[0].Color = "red";
+        gradient.Stops[0].Color = "white";
+    }
+
+    private void OnChangeConnectorType(ChangeEventArgs args)
+    {
+        Segments segments = (Segments)Enum.Parse(typeof(Segments), args.Value.ToString());
+        connector.Type = segments;
+    }
+
+    private void OnCornerRadiusChange(ChangeEventArgs args)
+    {
+        connector.CornerRadius = double.Parse(args.Value.ToString());
+    }
+
+    private void RestDecorator()
+    {
+        connector.TargetDecorator = new Decorator { Width = 15, Height = 15, Shape = DecoratorShapes.Square };
+    }
+
+    private void OnSourcePaddingChange(ChangeEventArgs args)
+    {
+        connector.SourcePadding = double.Parse(args.Value.ToString());
+    }
+
+    private void OnTargetPddingChange(ChangeEventArgs args)
+    {
+        connector.TargetPadding = double.Parse(args.Value.ToString());
+    }
+
+    private void OnSegmentCollChange(ChangeEventArgs args)
+    {
+        string value = args.Value.ToString();
+        if (value == "Straight")
+        {
+            connector.Segments = new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new StraightSegment(){ Type = Segments.Straight, Point= new Point{X=20, Y=20} },
+                new StraightSegment(){ Type = Segments.Straight, Point= new Point{X=30, Y=70} }
+            };
+        }
+        else if (value == "Orthogonal")
+        {
+            connector.Segments = new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new OrthogonalSegment(){ Type = Segments.Orthogonal, Direction = Direction.Top, Length = 50 },
+                new OrthogonalSegment(){ Type = Segments.Orthogonal,  Direction = Direction.Right, Length = 40 }
+            };
+        }
+        else
+        {
+            connector.Segments = new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new BezierSegment(){ Type = Segments.Bezier, Point= new Point{X=50, Y=50} },
+                new BezierSegment(){ Type = Segments.Bezier,Point= new Point{X=70, Y=40}}
+            };
+        }
+
+    }
+}

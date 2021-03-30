@@ -1,0 +1,30 @@
+﻿@page "/child-absolute-position"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        Canvas canvas = new Canvas();
+        canvas.Pivot = new Point { X = 0, Y = 0 };
+        canvas.OffsetX = 200;
+        canvas.OffsetY = 100;
+        canvas.Width = 200;
+        canvas.Height = 200;
+
+        DiagramElement child = new DiagramElement();
+        child.Width = 10;
+        child.Height = 10;
+        child.SetOffsetWithRespectToBounds(95, 95, UnitMode.Absolute);
+        canvas.Children = new DiagramObjectCollection<ICommonElement>() { child };
+
+        basicElements.Add(canvas);
+    }
+}

@@ -1,0 +1,70 @@
+﻿@page "/FlowShapesSample"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="1000px" Nodes="@nodes"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+        nodes = new DiagramObjectCollection<Node>() {
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Process } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Decision } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Document } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.PreDefinedProcess } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Terminator } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.PaperTap } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.DirectData } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.SequentialData } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Sort } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.MultiDocument } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Collate } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.SummingJunction } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Or } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.InternalStorage } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Extract } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.ManualOperation } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Merge } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.OffPageReference } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.SequentialAccessStorage } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Annotation } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Annotation2 } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Data } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Card } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Delay } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Preparation } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.Display } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.ManualInput } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.LoopLimit } },
+            new Node() { Shape = new FlowShape() { Type = Shapes.Flow, Shape=  FlowShapes.StoredData } },
+        };
+        int offsetX = 100; int offsetY = 100; int width = 50; int height = 50; double count = 1;
+        for (int i = 1; i <= nodes.Count; i++)
+        {
+            nodes[i - 1].ID = "node" + i;
+            nodes[i - 1].Width = width;
+            nodes[i - 1].Height = height;
+            nodes[i - 1].OffsetX = count * offsetX;
+            nodes[i - 1].OffsetY = offsetY;
+
+            count += 1.5;
+            if (i % 6 == 0)
+            {
+                count = 1;
+                offsetX = 100;
+                offsetY = offsetY + 200;
+            }
+
+            nodes[i - 1].Style.Fill = "#19aa8d";
+            nodes[i - 1].Style.StrokeColor = "#ff2020";
+            nodes[i - 1].Style.StrokeWidth = 2;
+            nodes[i - 1].Style.StrokeDashArray = "2,2";
+            nodes[i - 1].Style.Opacity = 0.9;
+            string value = nodes[i - 1].Style.GetType().ToString();
+        }
+    }
+}

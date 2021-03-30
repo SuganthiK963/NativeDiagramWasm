@@ -1,0 +1,41 @@
+﻿@page "/MultipleConnectorOrthoSegment/PointToPoint"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" Connectors="@connectors"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<Connector> connectors = new DiagramObjectCollection<Connector>();
+
+    DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+       
+        Direction[] dir = new Direction[] { Direction.Right, Direction.Left, Direction.Top, Direction.Bottom };
+        Point[] sourcePoints = new Point[] { new Point { X = 300, Y = 200 }, new Point { X = 550, Y = 250 }, new Point { X = 250, Y = 400 }, new Point { X = 550, Y = 400 } };
+        Point[] targetPoints = new Point[] { new Point { X = 100, Y = 100 }, new Point { X = 700, Y = 100 }, new Point { X = 100, Y = 500 }, new Point { X = 700, Y = 500 } };
+        int con = 0;
+        for (int k = 0; k < sourcePoints.Length; k++)
+        {
+            for (int l = 0; l < dir.Length; l++)
+            {
+                Connector connector = new Connector()
+                {
+                    ID = "connector" + con,
+                    Type = Segments.Orthogonal,
+                    SourcePoint = sourcePoints[k],
+                    TargetPoint = targetPoints[k], CornerRadius=20,
+                    Segments = new DiagramObjectCollection<ConnectorSegment>(){
+                    new OrthogonalSegment { Type= Segments.Orthogonal, Direction= dir[l], Length= 50 } },
+                };
+                connectors.Add(connector);
+                con++;
+            }
+        }
+
+    }
+
+}

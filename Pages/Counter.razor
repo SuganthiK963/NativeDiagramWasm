@@ -1,0 +1,26 @@
+﻿@page "/counter"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        Canvas element = new Canvas();
+        element.Pivot = new Point() { X = 0.5, Y = 0.5 };
+        element.OffsetX = 200;
+        element.OffsetY = 200;
+        element.Width = 200;
+        element.Height = 200;
+        element.Style = new ShapeStyle() { Fill = "#357BD2", StrokeColor = "#6F409F", StrokeWidth = 3, Opacity = 0.5 };
+        element.Children = new DiagramObjectCollection<ICommonElement>() { };
+        element.Children.Add(new DiagramElement() { Margin = new Margin() { Left = 80, Bottom = 30, Right = 30, Top = 80 }, Style = new ShapeStyle() { Fill = "#37909A", StrokeColor = "#024249", StrokeDashArray = "2,2" } });
+        basicElements.Add(element);
+    }
+}

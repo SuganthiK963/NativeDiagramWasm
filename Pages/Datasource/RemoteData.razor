@@ -1,0 +1,62 @@
+﻿@page "/RemoteData"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Data
+@using System.Collections.ObjectModel
+
+<div style="width:100%">
+    <div style="width:70%">
+        <SfDiagramWasm @ref="Diagram" Id="diagram" Width="1000px" Height="500px"
+                       NodeDefaults="NodeDefaults" ConnectorDefaults="ConnectorDefaults" SetNodeTemplate="SetTemplate">
+            <DataSourceSettings Id="EmployeeID" ParentId="ReportsTo">
+                <SfDataManager Url="https://services.odata.org/V4/Northwind/Northwind.svc/Employees" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor"></SfDataManager>
+            </DataSourceSettings>
+            <!--<DataSourceSetting Id="EmployeeID" ParentId="FirstName">-->
+                @*<SfDataManager Url="https://services.odata.org/V4/Northwind/Northwind.svc/Employees" Adaptor="Syncfusion.Blazor.Adaptors.ODataV4Adaptor"></SfDataManager>
+            <SfDataManager Url="https://js.syncfusion.com/demos/ejServices/Wcf/Northwind.svc/Employees" Adaptor="Syncfusion.Blazor.Adaptors.ODataAdaptor"></SfDataManager>*@
+                <!--<SfDataManager Url="https://ej2services.syncfusion.com/production/web-services/api/Employees" Adaptor="Syncfusion.Blazor.Adaptors.WebApiAdaptor"></SfDataManager>
+            </DataSourceSetting>-->
+            <ScrollSettings></ScrollSettings>
+        </SfDiagramWasm>
+    </div>
+</div>
+@code{
+
+    SfDiagramWasm Diagram;
+
+    float x = 100;
+    float y = 100;
+    public class Employee
+    {
+        public int? EmployeeID { get; set; }
+        public string FirstName { get; set; }
+        public int? ReportsTo { get; set; }
+    }
+    Query Query = new Query().Select(new List<string>() { "EmployeeID", "ReportsTo", "FirstName" }).Take(9);
+    private void NodeDefaults(IDiagramObject obj)
+    {
+        Node node = obj as Node;
+        node.OffsetX = x;
+        node.OffsetY = y;
+        x += 100;
+
+        Employee data = System.Text.Json.JsonSerializer.Deserialize<Employee>(node.Data.ToString());
+        //node.Style.Fill = olor;
+        node.Annotations = new DiagramObjectCollection<ShapeAnnotation>()
+        {
+            new ShapeAnnotation()
+            {
+                Content = data.FirstName
+            }
+        };
+    }
+    private void ConnectorDefaults(IDiagramObject connector)
+    {
+
+    }
+    private ICommonElement SetTemplate(IDiagramObject node)
+    {
+        return null;
+    }
+
+}

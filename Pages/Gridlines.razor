@@ -1,0 +1,83 @@
+﻿@page "/Gridlines"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+
+
+
+@using System.Collections.ObjectModel
+<div id="ss" @onmousedown="UpdateHeading"></div>
+<button @onclick="@onclick">Color Changge</button>
+<input type="button" value="ChangeSnap1" @onclick="@ChangeSnap" />
+<input type="button" value="ChangeSnapColor" @onclick="@ChangeSnapColor" />
+@*<input type="button" value="Save" @onclick="Save" />
+    <input type="button" value="Load" @onclick="Load" />*@
+
+<SfDiagramWasm @ref="@diagram" ID="diagram" Width="1000px" Height="500px">
+    <SnapSettings GridType="@type">
+        <HorizontalGridLines LineColor="@Hlinecolor" LineIntervals="@HInterval" DotIntervals="@HDotInterval"></HorizontalGridLines>
+        <VerticalGridLines LineColor="@Vlinecolor" LineIntervals="@VInterval" DotIntervals="@VDotInterval"></VerticalGridLines>
+    </SnapSettings>
+</SfDiagramWasm>
+
+@code{
+    HorizontalGridLines HGridline;
+    VerticalGridLines VGridline;
+    private async Task UpdateHeading(MouseEventArgs e)
+    {
+
+    }
+    SfDiagramWasm diagram;
+    public double[] HDotInterval { get; set; } = new double[] { 3, 20, 1, 20, 1, 20 };
+    public double[] VDotInterval { get; set; } = new double[] { 3, 20, 1, 20, 1, 20, 1, 20, 1, 20 };
+    public double[] HInterval { get; set; } = new double[] { 1.25, 18.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75 };
+    public double[] VInterval { get; set; } = new double[] { 1.25, 18.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75 };
+    public string Hlinecolor { get; set; } = "red";
+    public string Vlinecolor { get; set; } = "red";
+
+    DiagramObjectCollection<object> basicElements = new DiagramObjectCollection<object>();
+
+    GridType type = GridType.Lines;
+
+    public async Task onclick()
+    {
+
+        type = type == GridType.Dots ? GridType.Lines : GridType.Dots;
+        Hlinecolor = Hlinecolor == "green" ? "blue" : "green";
+        Vlinecolor = Vlinecolor == "green" ? "blue" : "green";
+
+
+    }
+
+
+    protected override void OnInitialized()
+    {
+        Canvas element = new Canvas();
+        element.Pivot = new Point() { X = 1, Y = 1 };
+        element.OffsetX = 200;
+        element.OffsetY = 200;
+        element.Width = 200;
+        element.Height = 200;
+
+        basicElements.Add(element);
+    }
+    private void ChangeSnap()
+    {
+        HDotInterval = HDotInterval.Length < 8 ? new double[] { 1.25, 18.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75 } : new double[] { 3, 20, 1, 20, 1, 20 };
+        VDotInterval = VDotInterval.Length < 8 ? new double[] { 1.25, 18.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75, 0.25, 19.75 } : new double[] { 3, 20, 1, 20, 1, 20 };
+    }
+    private void ChangeSnapColor()
+    {
+        Hlinecolor = string.Equals(Hlinecolor, "Yellow") ? "Blue" : "Yellow"; ;
+        Vlinecolor = string.Equals(Vlinecolor, "Yellow") ? "Blue" : "Yellow";
+    }
+
+    string data;
+    private void Save()
+    {
+        //data = diagram.Save();
+    }
+    private async void Load()
+    {
+        //await diagram.Load(data);
+    }
+}

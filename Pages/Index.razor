@@ -1,0 +1,26 @@
+﻿@page "/diagramElement"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        Canvas element = new Canvas();
+        element.Pivot = new Point() { X = 1, Y = 1 };
+        element.OffsetX = 200;
+        element.OffsetY = 200;
+        element.Width = 200;
+        element.Height = 200;
+        element.Children = new DiagramObjectCollection<ICommonElement>() { };
+        element.Children.Add(new DiagramElement() { Margin = new Margin() { Left = 10, Bottom = 10, Right = 10, Top = 10 } });
+        basicElements.Add(element);
+    }
+
+}

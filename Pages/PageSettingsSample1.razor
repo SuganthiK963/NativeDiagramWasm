@@ -1,0 +1,113 @@
+﻿@page "/PageSettings1"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+
+<style>
+    #diagram-space {
+        width: 70%;
+        float: left;
+    }
+
+    #properties {
+        width: 25%;
+        float: right;
+    }
+</style>
+
+<div id="diagram-space">
+    <SfDiagramWasm @ref="@diagram" ID="diagram" Width="100%" Height="500px" Nodes="@nodes" Connectors="@connectors">
+        <PageSettings Width="@PageWidth" Height="@PageHeight" Orientation="@pageOrientation" MultiplePage="@IsMultiplePage" ShowPageBreaks="@IsShowPageBreaks">
+        </PageSettings>
+    </SfDiagramWasm>
+</div>
+
+<div id="properties">
+    <button @onclick="@OnSave">Save</button>
+    <button @onclick="@OnLoad">Load</button><br />
+
+    <b>Page: Width</b>
+    <input type="number" value="50" min="10" max="500" step="5" @onchange="@OnPageWidthChange" />
+    <b>Height</b>
+    <input type="number" value="50" min="10" max="500" step="5" @onchange="@OnPageHeightChange" />
+    <br />
+
+    <b>Orientation:</b>
+    <select id="shapes" @onchange="@OnPageOrientationChange">
+        <option value="@PageOrientation.Landscape">Landscape</option>
+        <option value="@PageOrientation.Portrait">Portrait</option>
+    </select><br>
+
+    <input type="checkbox" @onchange="@OnChangeMultiplePage" checked>
+    <label>Multiple Page</label>
+
+    <input type="checkbox" @onchange="@OnChangeShowPageBreaks" checked>
+    <label>Page Breaks</label><br>
+
+</div>
+
+@code{
+    SfDiagramWasm diagram;
+
+    double PageWidth = 300;
+    double PageHeight = 300;
+    PageOrientation pageOrientation = PageOrientation.Landscape;
+    bool IsMultiplePage = true;
+    bool IsShowPageBreaks = true;
+
+    DiagramObjectCollection<Node> nodes; DiagramObjectCollection<Connector> connectors;
+
+    protected override void OnInitialized()
+    {
+        nodes = new DiagramObjectCollection<Node>(){
+            new Node { ID = "node1", Width = 150, Height = 100, OffsetX = 100, OffsetY = 100, Annotations = new DiagramObjectCollection<ShapeAnnotation>() { new ShapeAnnotation() { Content = "Node1" } } },
+            new Node { ID = "node2", Width = 80, Height = 130, OffsetX = 200, OffsetY = 200, Annotations = new DiagramObjectCollection<ShapeAnnotation>() { new ShapeAnnotation() { Content = "Node2" } } },
+            new Node { ID = "node3", Width = 100, Height = 75, OffsetX = 300, OffsetY = 350, Annotations = new DiagramObjectCollection<ShapeAnnotation>() { new ShapeAnnotation() { Content = "Node3" } } }
+        };
+
+        connectors = new DiagramObjectCollection<Connector> {
+            new Connector { ID="connector1", SourcePoint=new Point { X=300, Y=400}, TargetPoint = new Point { X = 500, Y = 500 } }
+        };
+    }
+
+    private void OnPageWidthChange(ChangeEventArgs args)
+    {
+        PageWidth = double.Parse(args.Value.ToString());
+    }
+
+    private void OnPageHeightChange(ChangeEventArgs args)
+    {
+        PageHeight = double.Parse(args.Value.ToString());
+    }
+
+    private void OnPageOrientationChange(ChangeEventArgs args)
+    {
+        PageOrientation orientation = (PageOrientation)Enum.Parse(typeof(PageOrientation), args.Value.ToString());
+        pageOrientation = orientation;
+    }
+
+    private void OnChangeMultiplePage(ChangeEventArgs args)
+    {
+        IsMultiplePage = (bool)args.Value;
+    }
+
+    private void OnChangeShowPageBreaks(ChangeEventArgs args)
+    {
+        IsShowPageBreaks = (bool)args.Value;
+    }
+
+
+    string json;
+
+    private void OnSave()
+    {
+        //json = diagram.Save();
+    }
+
+    private async void OnLoad()
+    {
+        //await diagram.Load(json);
+    }
+
+}

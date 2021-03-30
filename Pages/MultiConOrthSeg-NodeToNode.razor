@@ -1,0 +1,94 @@
+﻿@page "/MultipleConnectorOrthoSegment/NodeToNode"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="1000px" Nodes="@nodes" Connectors="@connectors"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<Connector> connectors = new DiagramObjectCollection<Connector>();
+
+    DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+        int count = 1; int offsetY = 100; int offsetX = 100;
+        for (var i = 0; i < 9; i++)
+        {
+            Node node = new Node {
+                ID= "node" + i, OffsetX= ((count) * offsetX), OffsetY= offsetY, Width= 50, Height= 50,
+                Ports=new DiagramObjectCollection<PointPort>()
+                        {
+                            new PointPort(){ID="Port1", Offset=new Point{X=0, Y=0.5}},
+                            new PointPort(){ID="Port2", Offset=new Point{X=0.5, Y=0}},
+                            new PointPort(){ID="Port3", Offset=new Point{X=1, Y=0.5}},
+                            new PointPort(){ID="Port4", Offset=new Point{X=0.5, Y=1}},
+                        }
+            };
+            if (node.ID == "node1")
+            {
+                node.OffsetX = 550; node.OffsetY = 250;
+            }
+            else if (node.ID == "node3")
+            {
+                node.OffsetX = 250;  node.OffsetY = 250;
+            }
+            else if (node.ID == "node5")
+            {
+                node.OffsetX = 550; node.OffsetY = 400;
+            }
+            else if (node.ID == "node7")
+            {
+                node.OffsetX = 250; node.OffsetY = 400;
+            }
+            if (node.ID != "node4")
+                nodes.Add(node);
+            count += 3;
+            if (count == 10)
+            {
+                count = 1;
+                offsetX = 100;
+                offsetY = offsetY + 200;
+            }
+        }
+        nodes.Add(new Node{ ID= "node9", OffsetX= 100, OffsetY= 700, Width= 50, Height= 50 });
+        nodes.Add(new Node { ID = "node10", OffsetX = 700, OffsetY = 700, Width = 50, Height = 50 });
+        nodes.Add(new Node{ ID= "node11", OffsetX= 100, OffsetY= 1000, Width= 50, Height=50, });
+        nodes.Add(new Node{ ID= "node12", OffsetX= 700, OffsetY= 900, Width= 50, Height= 50, });
+        nodes.Add(new Node{ ID= "node13", OffsetX= 300, OffsetY= 700, Width= 50, Height= 50 });
+        nodes.Add(new Node{ ID= "node14", OffsetX= 450, OffsetY= 700, Width= 50, Height= 50 });
+        nodes.Add(new Node{ ID= "node15", OffsetX= 100, OffsetY= 850, Width= 50, Height= 50 });
+        nodes.Add(new Node{ ID= "node16", OffsetX= 700, OffsetY= 1150, Width= 50, Height= 50 });
+
+
+        Direction[] dir = new Direction[] { Direction.Left, Direction.Right, Direction.Top, Direction.Bottom };
+        // let ports = ["port1", "port2", "port3", "port4"];
+        string[] targetNodes = new string[] {"node3", "node1", "node7", "node5",
+        "node13", "node14", "node15", "node16" };
+        string[] sourceNodes = new string[] {"node0", "node2", "node6", "node8",
+            "node9", "node10", "node11", "node12" };
+        for (int i = 0; i < sourceNodes.Length; i++)
+        {
+            for (int j = 0; j < dir.Length; j++)
+            {
+                Connector connector = new Connector
+                {
+                    ID = "connector" + count,
+                    Type = Segments.Orthogonal,
+                    TargetID = targetNodes[i],
+                    SourceID = sourceNodes[i],
+                    Segments = new DiagramObjectCollection<ConnectorSegment>(){
+                        new OrthogonalSegment { Type= Segments.Orthogonal, Direction= dir[j], Length= 50 }
+                    },
+                    TargetPadding = 20,
+                    SourcePadding = 20,
+                };
+                connectors.Add(connector);
+                count++;
+            }
+        }
+
+    }
+
+}

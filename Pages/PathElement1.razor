@@ -1,0 +1,116 @@
+﻿@page "/pathelement1"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        PathElement element = new PathElement();
+        element.OffsetX = 100;
+        element.OffsetY = 100;
+        element.Width = 50;
+        element.Height = 50;
+        element.Data = "M 355.31 12.07 C 352.11 5.95 345.35 -1.14 331.41 0.15 C 290.33 3.93 209.61 81.48 190.42 111.69 C 189.66 107.76 187.9 101.49 184.12 98.05 C 189.5 87.75 198.01 69.64 201.57 52.48 C 202.4 52.26 203.12 51.68 203.34 50.44 C 203.72 48.34 204 46.22 204.39 44.13 C 205.01 40.62 199.99 39.43 199.42 42.91 C 199.06 45.06 198.69 47.15 198.35 49.31 C 198.16 50.6 198.69 51.62 199.54 52.14 C 196.08 68.87 187.75 86.63 182.43 96.81 C 181.52 96.29 180.53 95.87 179.41 95.7 C 179.09 95.65 178.8 95.72 178.5 95.71 C 178.19 95.72 177.91 95.65 177.59 95.7 C 176.46 95.87 175.48 96.29 174.56 96.81 C 169.24 86.63 160.92 68.87 157.46 52.14 C 158.3 51.62 158.83 50.6 158.65 49.31 C 158.3 47.15 157.93 45.06 157.58 42.91 C 157.01 39.43 151.99 40.62 152.61 44.13 C 152.99 46.22 153.28 48.34 153.66 50.44 C 153.87 51.68 154.6 52.27 155.42 52.48 C 158.98 69.63 167.49 87.75 172.87 98.05 C 169.09 101.49 167.33 107.76 166.57 111.69 C 147.39 81.48 66.67 3.93 25.59 0.15 C 11.65 -1.14 4.89 5.95 1.69 12.07 C -2.05 19.07 0.84 33.48 6.24 58.46 C 8.66 69.55 11.16 80.96 12.94 92.2 C 13.89 98.36 14.79 104.49 15.64 110.36 C 19.39 136.89 22.52 158.97 32.64 166.04 C 35.41 167.98 38.65 168.78 42.61 168.24 C 52.26 165.95 63.79 164.03 75.99 162.67 C 64.03 171.47 49.08 185.81 44.17 204.84 C 40.38 219.72 43.37 234.86 53.01 250.05 C 64.37 267.81 76.02 279.48 86.91 287.09 C 108.68 302.31 127.52 301.24 135.48 300.78 C 136.3 300.77 136.94 300.71 137.56 300.69 C 143.62 300.61 147.76 291.39 156.6 270.51 C 160.94 260.34 167.39 245.19 172.83 237.47 C 173.97 240.31 177.22 242.31 178.92 242.87 C 178.78 242.94 178.62 243.07 178.49 243.12 C 178.65 243.08 178.83 242.97 179 242.91 C 179.1 242.94 179.25 243.02 179.34 243.04 C 179.26 243.01 179.13 242.93 179.04 242.89 C 180.83 242.24 183.05 240.25 184.16 237.48 C 189.6 245.19 196.05 260.34 200.39 270.52 C 209.23 291.4 213.38 300.61 219.43 300.7 C 220.05 300.72 220.69 300.77 221.51 300.78 C 229.47 301.25 248.31 302.31 270.08 287.1 C 280.97 279.49 292.62 267.81 303.98 250.05 C 313.62 234.86 316.6 219.72 312.82 204.84 C 307.91 185.82 292.96 171.48 281 162.67 C 293.2 164.03 304.73 165.95 314.38 168.24 C 318.34 168.78 321.58 167.98 324.35 166.04 C 334.47 158.97 337.6 136.89 341.35 110.37 C 342.19 104.49 343.1 98.37 344.05 92.2 C 345.83 80.96 348.33 69.55 350.75 58.46 C 356.16 33.48 359.05 19.07 355.31 12.07 z M 183.92 237.56 C 182.35 240.3 180.35 242.13 178.97 242.86 C 177.49 242.19 174.7 240.38 173.08 237.56 C 173.08 237.56 166.19 138.22 166.91 113.58 C 166.91 113.58 169.24 97.92 178.5 97.81 C 187.76 97.92 190.09 113.58 190.09 113.58 C 190.81 138.22 183.92 237.56 183.92 237.56 z";
+
+
+        PathElement element2 = new PathElement();
+        element2.Width = 100;
+        element2.Height = 100;
+        element2.OffsetX = 300;
+        element2.Style.StrokeWidth = 1;
+        element2.OffsetY = 100;
+        element2.Data = "M300,200 h-150 a150,150 0 1,0 150,-150 z";
+        element2.Style.Fill = "red";
+
+        PathElement element3 = new PathElement();
+        element3.Width = 100;
+        element3.Height = 100;
+        element3.OffsetX = 500;
+        element3.OffsetY = 100;
+        element3.Style.StrokeWidth = 1;
+        element3.Data = "M35.2441,25 L22.7161,49.9937 L22.7161,0.00657536 L35.2441,25 z M22.7167,25 L-0.00131226,25 M35.2441,49.6337 L35.2441,0.368951 M35.2441,25 L49.9981,25";
+        element3.Style.Fill = "blue";
+
+        PathElement element4 = new PathElement();
+        element4.Width = 100;
+        element4.Height = 100;
+        element4.OffsetX = 700;
+        element4.OffsetY = 100;
+        element4.Style.StrokeWidth = 1;
+        element4.Data = "M100,200 C100,100 250,100 250,200 S400,300 400,200";
+
+        PathElement element5 = new PathElement();
+        element5.Width = 100;
+        element5.Height = 100;
+        element5.OffsetX = 900;
+        element5.OffsetY = 100;
+        element5.Style.StrokeWidth = 1;
+        element5.Data = "M433.4624,503.8848C429.4244,493.2388,419.1354,485.6678,407.0734,485.6678C391.4884,485.6678,378.8544,498.3018,378.8544,513.8868L384.4984,513.8868C384.4984,501.4178,394.6054,491.3108,407.0734,491.3108C415.9494,491.3108,423.6264,496.4338,427.3144,503.8848L422.9114,503.8848L426.8974,508.8848L430.8824,513.8868L434.8684,508.8848L438.8544,503.8848L433.4624,503.8848z";
+
+        PathElement element6 = new PathElement();
+        element6.Width = 50;
+        element6.Height = 50;
+        element6.OffsetX = 100;
+        element6.OffsetY = 300;
+        element6.Style.StrokeWidth = 1;
+        element6.Data = "M10 80 T 180 80 ";
+
+
+        PathElement element8 = new PathElement();
+        element8.Width = 50;
+        element8.Height = 50;
+        element8.OffsetX = 300;
+        element8.OffsetY = 300;
+        element8.Style.StrokeWidth = 1;
+        element8.Data = "M300,200 h-150 a150,150 0 0,1 150,-150 z";
+        element8.Style.Fill = "red";
+
+        PathElement element9 = new PathElement();
+        element9.Width = 50;
+        element9.Height = 50;
+        element9.OffsetX = 500;
+        element9.Style.StrokeWidth = 1;
+        element9.OffsetY = 300;
+        element9.Data = "M300,200 h-150 a150,150 0 0,0 150,-150 z";
+        element9.Style.Fill = "red";
+
+
+
+        PathElement element10 = new PathElement();
+        element10.Width = 50;
+        element10.Height = 50;
+        element10.OffsetX = 700;
+        element10.Style.StrokeWidth = 1;
+        element10.OffsetY = 300;
+        element10.Data = "M300,200 h-150 a150,150 0 1,1 150,-150 z";
+        element10.Style.Fill = "red";
+
+
+        PathElement element11 = new PathElement();
+        element11.Width = 50;
+        element11.Height = 50;
+        element11.OffsetX = 900;
+        element11.OffsetY = 300;
+        element11.Style.StrokeWidth = 1;
+        element11.Style.StrokeDashArray = "";
+        element11.Style.Fill = "";
+        element11.Data = "M10 80 Q 52.5 10, 95 80 T 180 80 ";
+
+        PathElement element12 = new PathElement();
+        element12.Width = 50;
+        element12.Height = 50;
+        element12.OffsetX = 100;
+        element12.OffsetY = 300;
+        element12.Style.StrokeWidth = 1;
+        element12.Data = "m10 80 q 52.5 10, 95 80 t 180 80 ";
+        basicElements = new DiagramObjectCollection<ICommonElement>() { element, element2, element3, element4, element5, element6, element8, element9, element10, element11, element12 };
+    }
+
+}

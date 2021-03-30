@@ -1,0 +1,85 @@
+﻿@using Syncfusion.Blazor;
+@using Syncfusion.Blazor.Data;
+@using static WasmNativeImplementation.Pages.Datasource.SQLData;
+@using System.Data;
+@using System.IO;
+@using Microsoft.AspNetCore.Hosting;
+@using System.Data;
+@using System.Data.OleDb;
+@using System.Text.Json.Serialization;
+
+
+
+@inherits DataAdaptor<HierarchicalDetails>
+
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    [JsonIgnore]
+    public RenderFragment ChildContent { get; set; }
+    // Performs data Read operation
+    public override object Read(DataManagerRequest dm, string key = null)
+    {
+        // Connection string and SQL query    
+        string path = "Pages/Datasource/Employee.mdb";
+        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + path;
+
+        string strSQL = "SELECT * FROM Employees"; DataSet data = new DataSet();
+        // Create a connection    
+        using (OleDbConnection connection = new OleDbConnection(connectionString))
+        {
+            // Create a command and set its connection    
+            OleDbCommand command = new OleDbCommand(strSQL, connection);
+            // Open the connection and execute the select command.    
+            try
+            {
+                connection.Open();
+                // Open connecton    
+                using (OleDbDataReader reader = command.ExecuteReader())
+                {
+                    DataTable dataTable = new DataTable();
+                    dataTable.Load(reader);
+                    data.Tables.Add(dataTable);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Orders = ConvertDataTable<HierarchicalDetails>(data.Tables[0]);
+        }
+        IEnumerable<HierarchicalDetails> DataSource = Orders;
+        return (object)DataSource;
+    }
+
+    private static List<T> ConvertDataTable<T>(DataTable dt)
+    {
+        List<T> data = new List<T>();
+        foreach (DataRow row in dt.Rows)
+        {
+            T item = GetItem<T>(row);
+            data.Add(item);
+        }
+        return data;
+    }
+    private static T GetItem<T>(DataRow dr)
+    {
+        Type temp = typeof(T);
+        T obj = Activator.CreateInstance<T>();
+
+        foreach (DataColumn column in dr.Table.Columns)
+        {
+            foreach (System.Reflection.PropertyInfo pro in temp.GetProperties())
+            {
+                if (pro.Name == column.ColumnName)
+                    pro.SetValue(obj, dr[column.ColumnName].ToString());
+                else
+                    continue;
+            }
+        }
+        return obj;
+    }
+}

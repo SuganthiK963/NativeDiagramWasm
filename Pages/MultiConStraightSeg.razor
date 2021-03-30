@@ -1,0 +1,105 @@
+﻿@page "/MultipleConnectorStraightSegment"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" Nodes="@nodes" Connectors="@connectors"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<Connector> connectors = new DiagramObjectCollection<Connector>();
+
+    DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+        nodes.Add(
+            new Node()
+            {
+                ID = "node1",
+                OffsetX = 100,
+                OffsetY = 300,
+                Width = 100,
+                Height = 100,
+                Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+            });
+        nodes.Add(new Node() {
+            ID = "node2", OffsetX = 300, OffsetY = 400, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+        nodes.Add(new Node() { ID = "node3", OffsetX = 500, OffsetY = 300, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0, Y = 0.5 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+        nodes.Add(new Node() { ID = "node4", OffsetX = 700, OffsetY = 400, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 1, Y = 0.5 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+
+
+        Connector connector1 = new Connector() { ID = "connector1", SourcePoint=new Point() { X = 100, Y = 10 }, TargetPoint=new Point() { X = 200, Y = 100 }, Type= Segments.Straight,
+            Segments=new DiagramObjectCollection<ConnectorSegment>() {
+            new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=150, Y=50 } },
+            new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=100, Y=70 } }
+        }
+        };
+        connectors.Add(connector1);
+
+        Connector connector2 = new Connector() { ID = "connector2",
+            SourceID = "node1", TargetID="node2",
+            Segments = new DiagramObjectCollection<ConnectorSegment>() {
+            new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=100, Y=200 } },
+            new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=300, Y=200 } }
+            }
+        };
+        connectors.Add(connector2);
+
+        Connector connector3 = new Connector() { ID = "connector3",
+            SourceID = "node3", SourcePortID="Port1",
+            TargetID = "node4", TargetPortID ="Port1",Type = Segments.Straight,
+            Segments = new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=500, Y=200 } },
+                new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=700, Y=200 } }
+            }
+        };
+        connectors.Add(connector3);
+
+        
+    }
+
+}

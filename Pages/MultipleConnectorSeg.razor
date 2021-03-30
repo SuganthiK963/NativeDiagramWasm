@@ -1,0 +1,158 @@
+﻿@page "/MultipleConnectorSegment"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" Connectors="@connectors"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<Connector> connectors = new DiagramObjectCollection<Connector>();
+
+    DiagramObjectCollection<Node> nodes = new DiagramObjectCollection<Node>();
+
+    protected override void OnInitialized()
+    {
+        nodes.Add(
+            new Node()
+            {
+                ID = "node1",
+                OffsetX = 100,
+                OffsetY = 300,
+                Width = 100,
+                Height = 100,
+                Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+            });
+        nodes.Add(new Node() {
+            ID = "node2", OffsetX = 300, OffsetY = 400, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+        nodes.Add(new Node() { ID = "node3", OffsetX = 500, OffsetY = 300, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+        nodes.Add(new Node() { ID = "node4", OffsetX = 700, OffsetY = 400, Width = 100, Height = 100,
+            Ports = new DiagramObjectCollection<PointPort>()
+                {
+                    new PointPort()
+                    {
+                        ID="Port1",
+                        Visibility = PortVisibility.Visible,
+                        Offset = new Point() { X = 0.5, Y = 0 },
+                        Height = 20, Width = 20
+                    },
+                }
+        });
+
+
+        Direction[] dir = new Direction[] { Direction.Right, Direction.Left, Direction.Top, Direction.Bottom };
+        Point[] sourcePoints = new Point[] { new Point { X = 300, Y = 200 }, new Point { X = 550, Y = 250 }, new Point { X = 250, Y = 400 }, new Point { X = 550, Y = 400 } };
+        Point[] targetPoints = new Point[] { new Point { X = 100, Y = 100 }, new Point { X = 700, Y = 100 }, new Point { X = 100, Y = 500 }, new Point { X = 700, Y = 500 } };
+        int con = 0;
+        for (int k = 0; k < sourcePoints.Length; k++)
+        {
+            for (int l = 0; l < dir.Length; l++)
+            {
+                Connector connector = new Connector()
+                {
+                    ID = "connector" + con,
+                    Type = Segments.Orthogonal,
+                    SourcePoint = sourcePoints[k],
+                    TargetPoint = targetPoints[k],
+                    Segments = new DiagramObjectCollection<ConnectorSegment>(){
+                    new OrthogonalSegment { Type= Segments.Orthogonal, Direction= dir[l], Length= 50 } },
+                };
+                // connectors.Add(connector);
+                con++;
+            }
+        }
+
+        Connector bezierConnector1 = new Connector()
+        {
+            ID = "connector2",
+            Type = Segments.Bezier,
+            SourcePoint = new Point { X = 50, Y = 50 },
+            TargetPoint = new Point { X = 200, Y = 250 },
+            Segments = new DiagramObjectCollection<ConnectorSegment>() {
+                            new BezierSegment{ Type= Segments.Bezier, Point=new Point { X= 150, Y= 150 } }
+                    }
+        };
+
+        connectors.Add(bezierConnector1);
+
+        Connector connector1 = new Connector() { ID = "connector1", SourcePoint=new Point() { X = 100, Y = 10 }, TargetPoint=new Point() { X = 200, Y = 100 }, Type= Segments.Straight,
+            Segments=new DiagramObjectCollection<ConnectorSegment>() {
+            new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=150, Y=50 } },
+            new StraightSegment(){ Type = Segments.Straight, Point=new Point(){X=100, Y=70 } }
+        }
+        };
+        //connectors.Add(connector1);
+
+        Connector connector2 = new Connector() { ID = "connector2",
+            SourcePoint = new Point() { X = 300, Y = 10 },
+            TargetPoint = new Point() { X = 400, Y = 100 }, Type = Segments.Orthogonal,
+            Segments = new DiagramObjectCollection<ConnectorSegment>() {
+            new OrthogonalSegment(){ Type = Segments.Orthogonal, Direction=Direction.Left, Length=50 },
+            new OrthogonalSegment(){ Type = Segments.Orthogonal, Direction=Direction.Bottom, Length=100 }
+            }
+        };
+        //connectors.Add(connector2);
+
+        Connector connector3 = new Connector() { ID = "connector3",
+            SourcePoint = new Point() { X = 500, Y = 10 },
+            TargetPoint = new Point() { X = 600, Y = 100 }, Type = Segments.Bezier,
+            Segments = new DiagramObjectCollection<ConnectorSegment>()
+            {
+                new BezierSegment(){ Type=Segments.Bezier, Point=new Point(){X=525, Y=20 } },
+                new BezierSegment(){ Type=Segments.Bezier, Point=new Point(){X=550, Y=45 } }
+            }
+        };
+        //connectors.Add(connector3);
+
+        Connector connector4 = new Connector() { ID = "connector4", SourceID = "node1", TargetID="node2", Type = Segments.Straight };
+        //connectors.Add(connector4);
+
+        Connector connector5 = new Connector() { ID = "connector5", SourceID = "node2", TargetID = "node3", Type = Segments.Orthogonal };
+        //connectors.Add(connector5);
+
+        Connector connector6 = new Connector() { ID = "connector6", SourceID = "node3", TargetID = "node4", Type = Segments.Bezier };
+        //connectors.Add(connector6);
+
+        Connector connector7 = new Connector() { ID = "connector7", SourceID = "node1", TargetID = "node2", Type = Segments.Straight, SourcePortID = "Port1", TargetPortID = "Port1" };
+        //connectors.Add(connector7);
+
+        Connector connector8 = new Connector() { ID = "connector8", SourceID = "node2", TargetID = "node3", Type = Segments.Orthogonal, SourcePortID = "Port1", TargetPortID = "Port1" };
+        //connectors.Add(connector8);
+
+        Connector connector9 = new Connector() { ID = "connector9", SourceID = "node3", TargetID = "node4", Type = Segments.Bezier, SourcePortID = "Port1", TargetPortID = "Port1" };
+        //connectors.Add(connector9);
+
+    }
+
+}

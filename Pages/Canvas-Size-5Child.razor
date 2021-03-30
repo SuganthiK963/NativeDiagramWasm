@@ -1,0 +1,60 @@
+﻿@page "/Canvas-Size-5Child"
+
+@using Syncfusion.Blazor.Diagrams.Wasm
+@using Syncfusion.Blazor.Diagrams.Wasm.Internal
+@using System.Collections.ObjectModel
+
+<SfDiagramWasm ID="diagram" Width="1000px" Height="500px" BasicElements="@basicElements"></SfDiagramWasm>
+
+@code{
+
+    DiagramObjectCollection<ICommonElement> basicElements = new DiagramObjectCollection<ICommonElement>();
+
+    protected override void OnInitialized()
+    {
+        Canvas canvas = new Canvas();
+        canvas.Pivot = new Point() { X = 0, Y = 0 };
+        canvas.OffsetX = 200;
+        canvas.OffsetY = 100;
+        canvas.Width = 400;
+        canvas.Height = 400;
+
+        DiagramElement child1 = new DiagramElement();
+        child1.Width = 100;
+        child1.Height = 100;
+        child1.HorizontalAlignment = HorizontalAlignment.Center;
+        child1.VerticalAlignment = VerticalAlignment.Stretch;
+        child1.RelativeMode = RelativeMode.Object;
+
+        DiagramElement child2 = new DiagramElement();
+        child2.Width = 100; child2.Height = 100;
+        child2.HorizontalAlignment = HorizontalAlignment.Stretch;
+        child2.VerticalAlignment = VerticalAlignment.Center;
+        child2.RelativeMode = RelativeMode.Object;
+
+        DiagramElement child3 = new DiagramElement();
+        child3.Width = 100; child3.Height = 100;
+        child3.HorizontalAlignment = HorizontalAlignment.Left;
+        child3.VerticalAlignment = VerticalAlignment.Top;
+        child3.RelativeMode = RelativeMode.Object;
+        child3.Margin.Left = child3.Margin.Top = 10;
+
+        DiagramElement child4 = new DiagramElement();
+        child4.Width = 100; child4.Height = 100;
+        child4.HorizontalAlignment = HorizontalAlignment.Right;
+        child4.VerticalAlignment = VerticalAlignment.Bottom;
+        child4.RelativeMode = RelativeMode.Object;
+        child4.Margin.Right = 10;
+        child4.Margin.Bottom = 10;
+
+        DiagramElement child5 = new DiagramElement();
+        child5.Width = 100;
+        child5.Height = 100;
+        child5.RelativeMode = RelativeMode.Object;
+
+        //canvas.children = new DiagramObjectCollection<ICommonElement>() { child1 };
+        canvas.Children = new DiagramObjectCollection<ICommonElement>() { child1, child2, child3, child4, child5 };
+
+        basicElements.Add(canvas);
+    }
+}
